@@ -1,0 +1,22 @@
+{
+    "name"       : "julian/s3man",
+    "description": "短信发送",
+    "type"       : "library",
+    "license"    : "MIT",
+    "authors"    : [
+        {
+            "name" : "Julian Yang",
+            "email": "snaqktvtkd@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require"          : {
+        "php": ">=7.0"
+    },
+    
+    "autoload": {
+        "psr-4": {
+            "s3man\\":"src/s3man"
+        }
+    }
+}
