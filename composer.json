@@ -1,6 +1,6 @@
 {
     "name"       : "julian/s3man",
-    "description": "短信发送V1",
+    "description": "短信发送 易信通V1",
     "type"       : "library",
     "license"    : "MIT",
     "authors"    : [
