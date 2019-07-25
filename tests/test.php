@@ -7,6 +7,6 @@ use s3man\Extsms;
 
 
 $aa = new Extsms();
-$aa->tel = 13858787110;
-$aa->mes = "中国国国国国国国国国国国国国男国国国男";
+$aa->tel = "13858787110";
+$aa->msg = "中国国国国国国国国国国国国国男国国国男";
 print_r($aa->sendMsg());

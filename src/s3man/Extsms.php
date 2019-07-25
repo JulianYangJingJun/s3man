@@ -1,7 +1,7 @@
 <?php
-use GuzzleHttp\Client;
-
 namespace s3man;
+
+// use GuzzleHttp\Client;
 
 const ENUMBER = 222809;
 const WSURL   = 'http://wxsms.api.ums86.com:8892/sms_hb/services/Sms?wsdl';
@@ -13,13 +13,7 @@ class Extsms {
 
     public $tel;
     
-    public $mes;
-
-    public function test()
-    {
-        print_r($this->generateParams());
-    }
-
+    public $msg;
 
     public function generateParams()
     {
@@ -27,7 +21,7 @@ class Extsms {
             "SpCode"          => ENUMBER,
             "LoginName"       => USER,
             "Password"        => PWD,
-            "MessageContent"  => iconv('UTF-8', 'GBK', $this->mes),            
+            "MessageContent"  => iconv('UTF-8', 'GBK', $this->msg),            
             "UserNumber"      => $this->tel,
             "SerialNumber"    => $this->swiftNum(),
             "ScheduleTime"    => '',
@@ -40,7 +34,7 @@ class Extsms {
 
     public function swiftNum()
     {
-        $res = substr(date("YmdHis"),2,30).mt_rand(10000000,99999999);
+        $res = substr(date("YmdHis"), 2, 30).mt_rand(10000000,99999999);
         return $res;
     }
 
@@ -56,20 +50,42 @@ class Extsms {
 
     public function sendMsg()
     {
-        if (!$this->verifiPhone()) {
-            throw new Exception('Mobile phone number format error');
+        try {
+            $res = [];
+            $sendMsg = $this->httpClient();
+            $exlode = explode("&", $sendMsg);        
+            if ($exlode[0] == 'result=0') {
+                $res['res'] = 'Success';
+            } else {
+                $res['res'] = 'Failed';            
+            }
+            $res['description'] = explode("=", $exlode[1])[1];
+            $res['taskid'] = explode("=", $exlode[2])[1];
+            $res['faillist'] = explode("=", $exlode[3])[1];
+            return $res;
+        } catch (\Exception $e) {
+            return false;
         }
-        
-        $client = new Client(
-            ['timeout' => 3.0]
-        );
 
-        $response = $client->request('POST', HTTPURL, [
-            'body' => $this->generateParams()
-        ]);
-
-        return $response->getBody();
     }
+
+	public function httpClient() {		
+		try {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, HTTPURL);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->generateParams());
+			$res = curl_exec($ch);
+			curl_close($ch);
+			return $res;
+		} catch (Exception $e) {
+			$this->errorMsg = $e->getMessage();
+			return false;
+		}
+	}	
+
 
 
 
