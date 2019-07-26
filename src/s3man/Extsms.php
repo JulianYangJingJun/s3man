@@ -1,8 +1,6 @@
 <?php
 namespace s3man;
 
-// use GuzzleHttp\Client;
-
 const ENUMBER = 222809;
 const WSURL   = 'http://wxsms.api.ums86.com:8892/sms_hb/services/Sms?wsdl';
 const HTTPURL = 'http://api.ums86.com:8888/sms/Api/Send.do';
@@ -57,11 +55,11 @@ class Extsms {
             if ($exlode[0] == 'result=0') {
                 $res['res'] = 'Success';
             } else {
-                $res['res'] = 'Failed';            
+                $res['res'] = 'Failed';
             }
             $res['description'] = explode("=", $exlode[1])[1];
             $res['taskid'] = explode("=", $exlode[2])[1];
-            $res['faillist'] = explode("=", $exlode[3])[1];
+            $res['faillist'] = explode("=", $exlode[3])[1];            
             return $res;
         } catch (\Exception $e) {
             return false;
@@ -85,9 +83,5 @@ class Extsms {
 			return false;
 		}
 	}	
-
-
-
-
-    
+   
 }
