@@ -1,24 +1,22 @@
 {
-    "name"       : "s3man/s3man",
+    "name": "s3man/s3man",
     "description": "短信发送 易信通V2",
-    "type"       : "library",
-    "license"    : "MIT",
-    "authors"    : [
-        {
-            "name" : "Julian Yang",
-            "email": "snaqktvtkd@gmail.com"
-        }
-    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Julian Yang",
+        "email": "snaqktvtkd@gmail.com"
+    }],
     "minimum-stability": "dev",
-    "require"          : {
-        "php"              : ">=7.0",
+    "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "~6.0",
-        "vlucas/phpdotenv" : "^3.4@dev"
+        "vlucas/phpdotenv": "^3.4@dev"
     },
-    
+
     "autoload": {
         "psr-4": {
-            "s3man\\":"src/"
+            "s3man\\": "src/"
         }
     }
 }
