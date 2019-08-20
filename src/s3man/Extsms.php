@@ -1,16 +1,19 @@
 <?php
+
 namespace s3man;
 
-const ENUMBER = 222809;
+const ENUMBER = 249831;
 const WSURL   = 'http://wxsms.api.ums86.com:8892/sms_hb/services/Sms?wsdl';
 const HTTPURL = 'http://api.ums86.com:8888/sms/Api/Send.do';
-const USER    = 'bxnjk';
-const PWD     = 'Pi-2=1.14';
+const USER    = 'DXSMS';
+const PWD     = 'dx123456';
 
-class Extsms {
+
+class Extsms
+{
 
     public $tel;
-    
+
     public $msg;
 
     public function generateParams()
@@ -19,12 +22,12 @@ class Extsms {
             "SpCode"          => ENUMBER,
             "LoginName"       => USER,
             "Password"        => PWD,
-            "MessageContent"  => iconv('UTF-8', 'GBK', $this->msg),            
+            "MessageContent"  => iconv('UTF-8', 'GBK', $this->msg),
             "UserNumber"      => $this->tel,
             "SerialNumber"    => $this->swiftNum(),
             "ScheduleTime"    => '',
             "ExtendAccessNum" => '',
-            "f"               =>'',
+            "f"               => '',
         ];
         return http_build_query($param);
     }
@@ -32,7 +35,7 @@ class Extsms {
 
     public function swiftNum()
     {
-        $res = substr(date("YmdHis"), 2, 30).mt_rand(10000000,99999999);
+        $res = substr(date("YmdHis"), 2, 30) . mt_rand(10000000, 99999999);
         return $res;
     }
 
@@ -51,7 +54,7 @@ class Extsms {
         try {
             $res = [];
             $sendMsg = $this->httpClient();
-            $exlode = explode("&", $sendMsg);        
+            $exlode = explode("&", $sendMsg);
             if ($exlode[0] == 'result=0') {
                 $res['res'] = 'Success';
             } else {
@@ -59,29 +62,28 @@ class Extsms {
             }
             $res['description'] = explode("=", $exlode[1])[1];
             $res['taskid'] = explode("=", $exlode[2])[1];
-            $res['faillist'] = explode("=", $exlode[3])[1];            
+            $res['faillist'] = explode("=", $exlode[3])[1];
             return $res;
         } catch (\Exception $e) {
             return false;
         }
-
     }
 
-	public function httpClient() {		
-		try {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, HTTPURL);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POST, 1);
+    public function httpClient()
+    {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, HTTPURL);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->generateParams());
-			$res = curl_exec($ch);
-			curl_close($ch);
-			return $res;
-		} catch (Exception $e) {
-			$this->errorMsg = $e->getMessage();
-			return false;
-		}
-	}	
-   
+            $res = curl_exec($ch);
+            curl_close($ch);
+            return $res;
+        } catch (Exception $e) {
+            $this->errorMsg = $e->getMessage();
+            return false;
+        }
+    }
 }

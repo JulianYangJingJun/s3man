@@ -1,6 +1,6 @@
 {
     "name": "s3man/s3man",
-    "description": "短信发送 易信通V2",
+    "description": "定制商城V1",
     "type": "library",
     "license": "MIT",
     "authors": [{
@@ -13,7 +13,6 @@
         "guzzlehttp/guzzle": "~6.0",
         "vlucas/phpdotenv": "^3.4@dev"
     },
-
     "autoload": {
         "psr-4": {
             "s3man\\": "src/"
